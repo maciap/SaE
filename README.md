@@ -17,9 +17,3 @@ output =  SaE_rankone.run()
 output_submatrix_approximation = output[0]
 print(f"the output submatrix has size {output_submatrix_approximationl.shape}")
 '''
-
-
-
-
-
-
