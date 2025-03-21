@@ -42,6 +42,7 @@ class SamplingAlgorithm:
         self.row_indices = [j for j in range(D.shape[0])]
         self.verbose = verbose 
         self.plot = plot  
+        self.approximate_biclique = approximate_biclique
         self.sparsity_constraint = sparsity_constraint   
         self.use_svd = use_svd
         self.increase_factor = increase_factor 
@@ -73,7 +74,7 @@ class SamplingAlgorithm:
             return False, num_large_singular_values
 
 
-    def sample_points(self, max_attempts=10e10):
+    def sample_points(self, max_attempts=10000000000000):
         '''
         Sample self.k+1 row indices and column indices in the initialization phase 
         @params: 
@@ -304,6 +305,7 @@ class SamplingAlgorithm:
         # Compute indicator matrix for the rows 
         Imat_rows, linear_combinations_all_rows, residuals_rows = self.compute_indicator_matrix(self.D, row_indices=row_indices, column_indices=col_indices, initial_matrix_rank=initial_matrix_rank)
 
+
         # Compute indicator matrix for the columns  
         Imat_columns, linear_combinations_all_columns, residuals_cols = self.compute_indicator_matrix(self.D.T, row_indices=col_indices, column_indices=row_indices, initial_matrix_rank=initial_matrix_rank)
 
@@ -311,15 +313,15 @@ class SamplingAlgorithm:
         Imat = (Imat_rows & Imat_columns.T)
        
         if self.plot: 
-            plt.imshow(Imat_rows) 
+            plt.imshow(Imat_rows, cmap="binary") 
             plt.title("Indicator Matrix Rows")
             plt.show() 
 
-            plt.imshow(Imat_columns.T) 
+            plt.imshow(Imat_columns.T, cmap="binary")  
             plt.title("Indicator Matrix Columns")
             plt.show() 
             
-            plt.imshow(Imat) 
+            plt.imshow(Imat, cmap="binary") 
             plt.title("Indicator Matrix")
             plt.show() 
 
@@ -346,7 +348,7 @@ class SamplingAlgorithm:
                                             Imat,   
                                             self.tau_u,    # tau_u - these are treshold for size of U and V - very useful 
                                             self.tau_v,    # tau_v
-                                            3,    # init_type (STAR)
+                                            0,    # init_type (STAR)
                                             1,    # init_iter 1 (not used)
                                             np.random.randint(0, 32767), # random seed
                                             True, # use_star

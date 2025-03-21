@@ -236,8 +236,70 @@ class SamplingAlgorithm:
 
 
 
-    
     def compute_rank_one_approximation(self, row_indices, col_indices): 
+        '''
+        Compute an intepretable rank-1 approximation based on either the anchor row or the anchor column (the approximation for which we derive approximation guarantees) or the rank-one svd 
+
+        @params: 
+        row_indices: output submatrix row indices 
+        col_indices:  output submatrix column indices
+
+        returns: 
+        rank_one_approximation: computed rank-one approximation (array)
+        error: approximation error (float) 
+        D_sub: submatrix to approximate (array)
+        '''
+
+        D_sub = self.D[np.ix_(row_indices, col_indices)]
+        if not self.use_svd: 
+            # Row-based rank-1 approximation 
+            last_row_idx = row_indices[-1]
+            reference_row = self.D[last_row_idx, col_indices] 
+            # Project all rows onto reference_row
+            row_projections = self.D[np.ix_(row_indices, col_indices)] @ reference_row.T
+            ref_row_norm_sq = np.dot(reference_row, reference_row)
+            if ref_row_norm_sq < 1e-8:
+                row_based_approx = np.zeros_like(D_sub)
+                row_error = np.inf
+            else:
+                coeffs = row_projections / ref_row_norm_sq  
+                row_based_approx = np.outer(coeffs, reference_row)
+                row_error = np.mean((D_sub - row_based_approx) ** 2)
+
+            # Column-based rank-1 approximation 
+            last_col_idx = col_indices[-1]
+            reference_col = self.D[row_indices, last_col_idx]  
+            col_projections = self.D[np.ix_(row_indices, col_indices)].T @ reference_col
+            ref_col_norm_sq = np.dot(reference_col, reference_col)
+            if ref_col_norm_sq < 1e-8:
+                col_based_approx = np.zeros_like(D_sub)
+                col_error = np.inf
+            else:
+                coeffs = col_projections / ref_col_norm_sq 
+                col_based_approx = np.outer(reference_col, coeffs)
+                col_error = np.mean((D_sub - col_based_approx) ** 2)
+
+            # Choose the one with lower error
+            if row_error <= col_error:
+                return row_based_approx, row_error, D_sub
+            else:
+                return col_based_approx, col_error, D_sub
+                       
+
+        else: 
+            # Use SVD  
+            rank_one_approximation = self.rank_one_svd_approximation(D_sub) 
+            # Error 
+            error = ((rank_one_approximation - D_sub)**2).sum() / np.prod(D_sub.shape) 
+
+        return rank_one_approximation, error, D_sub
+    
+
+
+
+
+    
+    def compute_rank_one_approximation_v2(self, row_indices, col_indices): 
         '''
         Compute an intepretable rank-1 approximation as the outer product of an actual row and column or the rank-1 SVD 
 
@@ -474,7 +536,7 @@ class SamplingAlgorithm:
                 row_indices = list(row_indices) 
                 col_indices = list(col_indices)
                 
-                rank_one_approximation, lr_score, D_sub = self.compute_rank_one_approximation_v2(row_indices, col_indices)
+                rank_one_approximation, lr_score, D_sub = self.compute_rank_one_approximation(row_indices, col_indices)
         
                 this_size = np.prod(rank_one_approximation.shape) 
                
@@ -808,8 +870,7 @@ class SamplingAlgorithm:
          
         # Compute ratios by row 
         ratios_by_row = self.compute_ratios(top_left[0]) 
-
-
+      
         # Compute ratios by columns 
         ratios_by_columns = self.compute_ratios_col(top_left[1]) 
       
@@ -823,7 +884,7 @@ class SamplingAlgorithm:
             inters = satisfying_subsets_rows[row_index].intersection(satisfying_subsets_cols[row_index]) # this are the common eleemnts 
             for elem in inters: 
                 Imat[row_index,elem] = 1 
-
+    
         if self.approximate_biclique=="proj": # Use projected denseset subgraph 
             row_indices, col_indices, _  = self.project_and_find_densest_subgraph(Imat)
             best_indices = (row_indices, col_indices) 
@@ -852,14 +913,13 @@ class SamplingAlgorithm:
                                             Imat,    # D
                                             self.tau_u,    # tau_u - these are treshold for size of U and V - very useful 
                                             self.tau_v,    # tau_v
-                                            3,    # init_type (STAR)
+                                            0,    # init_type (STAR)
                                             1,    # init_iter 1 (not used)
                                             np.random.randint(0, 32767), # random seed
                                             True, # use_star
                                             2,    # star_max_iter
                                             3)    # optimize        
-                
-                
+
                 row_indices.append(top_left[0])
                 col_indices.append(top_left[1])
                 best_indices = (row_indices,col_indices)
