@@ -1,7 +1,7 @@
 # SaE
-This code is submitted for the purpose of reproducing the experimental results in the paper "Sample and Expand: Discovering Low-rank Submatrices With Quality Guarantees". The code is written in Python 3. 
+This code is submitted for the purpose of implementing the method introduced in "Sample and Expand: Discovering Low-rank Submatrices With Quality Guarantees". The code is written in Python 3. 
 
-The current code is a **prototype**. Updates and improvements will be made soon.
+The current code is a **prototype**. Updates and improvements will be made soon. 
 
 
 Minimal example. 
