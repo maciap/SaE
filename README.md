@@ -3,7 +3,6 @@ This code is submitted for the purpose of implementing the method introduced in 
 
 The current code is a **prototype**. Updates and improvements will be made soon. 
 
-
 Minimal example. 
 ```python
 from discover_near_rank_one_submatrix import SamplingAlgorithm as SamplingAlgorithmRankOne
@@ -14,8 +13,7 @@ SaE_rankone = SamplingAlgorithmRankOne(D, delta=delta, delta_rectangle=delta_rec
 approximate_biclique = False, sparsity_constraint = False)
 output =  SaE_rankone.run()
 output_submatrix_approximation = output[0]
-print(f"The output submatrix has dimensions {output[0].shape}")
-'''
+print(f"The output submatrix has dimensions {output[0].shape}")'''
 
 
 The notebooks folder contains other two examples. 
