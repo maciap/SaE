@@ -5,17 +5,17 @@ The current code is a **prototype**. Updates and improvements will be made soon.
 
 
 Repository contents: 
-- `discover_near_rank_one_submatrix.py` - Algorithm to discover near-rank-1 submatrices 
-- `discover_near_rank_k_submatrix.py` - Algorithm to discover near-rank-k submatrices 
+- `discover_near_rank_one_submatrix.py` - Algorithm to discover near-rank-1 submatrices. 
+- `discover_near_rank_k_submatrix.py` - Algorithm to discover near-rank-k submatrices. 
 
 - `notebooks/`
-   - RecoverDenseLine.ipynb - Notebook showcasing the algorithm to discover near-rank-1 submatrices 
-   - RecoverDensePlane.ipynb - Notebook showcasing the algorithm to discover near-rank-k submatrices  
+   - RecoverDenseLine.ipynb - Notebook showcasing the algorithm to discover near-rank-1 submatrices. 
+   - RecoverDensePlane.ipynb - Notebook showcasing the algorithm to discover near-rank-k submatrices.  
 
 - `data/`
-  - `real_datasets/` - Real-world matrices used to assess the performance of SampleAndExpand 
-  - `synthetic_datasets/`- Example synthetic matrices generated according to the data-generating mechanism described in the paper 
-  -  data_utils.py - Utilities to read the datasets 
+  - `real_datasets/` - Real-world matrices used to assess the performance of SampleAndExpand. 
+  - `synthetic_datasets/`- Example synthetic matrices generated according to the data-generating mechanism described in the paper. 
+  -  data_utils.py - Utilities to read the datasets. 
   
   
   
