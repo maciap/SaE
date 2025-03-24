@@ -15,7 +15,7 @@ Repository contents:
 - `data/`
   - `real_datasets/` - Real-world matrices used to assess the performance of SampleAndExpand. 
   - `synthetic_datasets/`- Example synthetic matrices generated according to the data-generating mechanism described in the paper. 
-  -  data_utils.py - Utilities to read the datasets. 
+  -  `data_utils.py` - Utilities to read the datasets. 
   
   
   
