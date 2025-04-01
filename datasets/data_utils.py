@@ -9,16 +9,17 @@ import scipy
 import sys 
 
 
-def read_data(data_string): 
+def read_data(data_string, base_path = "datasets/real_datasets/"): 
     ''' function to read real-world datasets
     @params: 
-    data_string: input dataset name 
+    data_string: input dataset name (str) 
+    base_path: path of the folder which contains the data (str) 
     
     returns: 
-    D: real-world matrix dataset 
+    D: real-world matrix dataset (numpy.ndarray) 
     '''
 
-    elif data_string == "movielens": 
+    if data_string == "movielens": 
         data = Dataset.load_builtin('ml-100k')
         trainset = data.build_full_trainset()
         testset = trainset.build_testset()
@@ -27,30 +28,30 @@ def read_data(data_string):
             D[uid - 1, iid - 1] = rating
 
     elif data_string == "cameraman": 
-        image = Image.open("real_datasets/cameraman.png")
+        image = Image.open(base_path + "cameraman.png")
         # Convert the image to a NumPy array
         D = np.array(image)
 
     elif data_string == "isolet": 
-        D = np.load( "real_datasets/isolet_array.npy" ) 
+        D = np.load( base_path + "isolet_array.npy" ) 
 
     elif data_string == "olivetti": 
         faces = fetch_olivetti_faces(shuffle=True, random_state=42)
         D = faces.data  # Each row is a flattened 64x64 face image
 
     elif data_string == "orlRnSp": 
-        mat_data = scipy.io.loadmat('real_datasets/orlRnSp.mat')
+        mat_data = scipy.io.loadmat(base_path + 'orlRnSp.mat')
         D = mat_data["X1"].astype(float)
 
     elif data_string == "al_genes": 
-        train_df = pd.read_csv("real_datasets/data_set_ALL_AML_train.csv")
+        train_df = pd.read_csv(base_path + "/data_set_ALL_AML_train.csv")
         train_columns = [col for col in train_df if "call" not in col]
         train_adjusted = train_df[train_columns]
         numeric_columns = train_adjusted.select_dtypes(include='number')
         D = numeric_columns.to_numpy() 
     
     elif data_string == "mandrill": 
-        image = Image.open("real_datasets/mandrill.tiff")
+        image = Image.open(base_path + "/mandrill.tiff")
         gray_image = image.convert("L")
         D = np.array(gray_image)
 
@@ -62,11 +63,11 @@ def read_data(data_string):
         D =  X_ozone.astype("float")
 
     elif data_string == "BRCA1": 
-        df = pd.read_csv("real_datasets/BRCA1_miRNASeqGene-20160128.csv")
+        df = pd.read_csv(base_path + "/BRCA1_miRNASeqGene-20160128.csv")
         D= df.to_numpy()[:,1:].astype(float)
     
     elif data_string == "google_reviews": 
-        df = pd.read_csv('real_datasets/google_review_ratings.csv')
+        df = pd.read_csv(base_path + '/google_review_ratings.csv')
         df = df.iloc[:, 1:]
         float_columns = df.select_dtypes(include=['float'])
         column_means = float_columns.mean()
@@ -74,12 +75,12 @@ def read_data(data_string):
         D = float_columns.to_numpy().astype(float)
 
     elif data_string == "NPAS": 
-        data = pd.read_csv("real_datasets/NPAS-data.csv", sep = "," , )
+        data = pd.read_csv(base_path + "/NPAS-data.csv", sep = "," , )
         data_columns = data.select_dtypes(include=['int64', 'float64'])
         D = np.array(data_columns)
         
     elif data_string == "movie_trust": 
-        data = np.loadtxt("real_datasets/ratings.txt", dtype=int)  # Adjust delimiter if needed
+        data = np.loadtxt(base_path + "/ratings.txt", dtype=int)  # Adjust delimiter if needed
 
         # Extract columns
         user_ids = data[:, 0]
@@ -104,7 +105,7 @@ def read_data(data_string):
 
 
     elif data_string== "hearth": 
-        data = pd.read_csv("real_datasets/heart_disease_uci.csv")
+        data = pd.read_csv(base_path + "/heart_disease_uci.csv")
         label_encoder = LabelEncoder()
         # Iterate over each column with "object" data type
         for column in data.select_dtypes(include=['object']):
@@ -118,7 +119,7 @@ def read_data(data_string):
 
 
     elif data_string == "imagenet": 
-        filepath = "real_datasets/VGG16_imagenet_matrix_weights"
+        filepath = base_path + "/VGG16_imagenet_matrix_weights"
         with open(filepath, "rb") as fileim: 
             matrix_weights = pickle.load(fileim)
         D = matrix_weights
@@ -130,24 +131,40 @@ def read_data(data_string):
     return D 
 
 
-def read_synethetic_data(dist, nrows, nrowssubmatrix, noise_level_string, matrix_counter): 
-    ''' function to read real-world datasets
+
+def normalize_array_min_max(data): 
+    '''
+    Normalize data in the range [0,1] 
     @params: 
-    dist: distribution 
-    nrows: number of rows and columns in the matirx 
-    nrowssubmatrix: number of rows and columns in the ground-truth submatrix 
-    noise_level_string: level of noise 
-    matrix_counter: id of the dataset 
+    data: input array (numpy.ndarray) 
 
     returns: 
-    D: synthetic matrix dataset 
+    normalized array (numpy.ndarray) 
+    '''
+    min_vals = data.min()
+    max_vals = data.max()
+    return (data - min_vals) / (max_vals - min_vals)
+    
+    
+   
+def read_synethetic_data(dist, nrows, nrowssubmatrix, noise_level_string, matrix_counter, base_path = "datasets/synthetic_datasets/"): 
+    ''' Function to read real-world datasets
+    @params: 
+    dist: distribution (str)
+    nrows: number of rows and columns in the matirx (int) 
+    nrowssubmatrix: number of rows and columns in the ground-truth submatrix (int) 
+    noise_level_string: level of noise (float) 
+    matrix_counter: id of the dataset (int) 
+    base_path: path of the folder which contains the data (str) 
+
+    returns: 
+    D: synthetic matrix dataset (numpy ndarray) 
     '''
 
-    data_path = "data/synthetic_datasets/"  + dist + "_" + str(nrowssubmatrix) + "_" + str(nrows) + "_"  + str(noise_level_string)  + "_" + str(matrix_counter)
-    base_path = data_path + "/"
+    data_path = base_path  + dist + "_" + str(nrowssubmatrix) + "_" + str(nrows) + "_"  + str(noise_level_string)  + "_" + str(matrix_counter) + "/"
 
     # File path 
-    file_path =  base_path + "array_data_" + str(nrowssubmatrix) + "_" + str(nrows) + "_"  + str(noise_level_string)  + "_" + str(matrix_counter) + ".npy"
+    file_path =  data_path + "array_data_" + str(nrowssubmatrix) + "_" + str(nrows) + "_"  + str(noise_level_string)  + "_" + str(matrix_counter) + ".npy"
 
     # Generated matrix to read 
     D = np.load(file_path)
