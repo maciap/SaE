@@ -7,7 +7,7 @@ The current code is a **prototype**. Updates and improvements will be made soon.
 Repository contents: 
 - `discover_near_rank_one_submatrix.py` - Algorithm to discover near-rank-1 submatrices. 
 - `discover_near_rank_k_submatrix.py` - Algorithm to discover near-rank-k submatrices. 
-- 'example_script.py' - Example script performing experiment to extract the top five pattenrns according to the minimum between low-rankness score and size. 
+- `example_script.py` - Example script performing experiment to extract the top five pattenrns according to the minimum between low-rankness score and size. 
 
 - `notebooks/`
    - RecoverDenseLine.ipynb - Notebook showcasing the algorithm to discover near-rank-1 submatrices. 
