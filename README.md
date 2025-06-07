@@ -27,8 +27,16 @@ The code is written in Python 3.
   - `synthetic_datasets/`- Example synthetic matrices generated according to the data-generating mechanism described in the paper. 
   -  `data_utils.py` - Utilities to read the datasets. 
   
-  
-  
+
+
+
+## ✉️ Contacts
+
+For questions or collaboration, feel free to reach out:
+
+- Martino Ciaperoni – [martino.ciaperoni@sns.it](mailto:martino.ciaperoni@sns.it)
+
+
 ## ✏️ Minimal example. 
 ```python
 from discover_near_rank_one_submatrix import SamplingAlgorithm as SamplingAlgorithmRankOne
@@ -43,11 +51,6 @@ print(f"The output submatrix has dimensions {output[0].shape}")
 '''
 
 
-### ✉️ Contacts
-
-For questions or collaboration, feel free to reach out:
-
-- Martino Ciaperoni – [martino.ciaperoni@sns.it](mailto:martino.ciaperoni@sns.it)
 
 
 
