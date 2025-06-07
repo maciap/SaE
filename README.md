@@ -48,4 +48,3 @@ approximate_biclique = False, sparsity_constraint = False)
 output =  SaE_rankone.run()
 output_submatrix_approximation = output[0]
 print(f"The output submatrix has dimensions {output[0].shape}")
-'''
