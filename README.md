@@ -42,3 +42,13 @@ output_submatrix_approximation = output[0]
 print(f"The output submatrix has dimensions {output[0].shape}")
 '''
 
+
+### ✉️ Contacts
+
+For questions or collaboration, feel free to reach out:
+
+- Martino Ciaperoni – [martino.ciaperoni@sns.it](mailto:martino.ciaperoni@sns.it)
+
+
+
+
