@@ -34,7 +34,7 @@ The code is written in Python 3.
 
 For questions or collaboration, feel free to reach out:
 
-- Martino Ciaperoni – [martino.ciaperoni@sns.it](mailto:martino.ciaperoni@sns.it) or (mailto:martinociap@gmail.com)
+- Martino Ciaperoni – [martino.ciaperoni@sns.it](mailto:martino.ciaperoni@sns.it) or [martinociap@gmail.com](mailto:martinociap@gmail.com)
 
 
 ## ✏️ Minimal example. 
