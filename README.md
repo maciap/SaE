@@ -2,6 +2,8 @@
 This code implements the algorithms introduced in the paper "Sample and Expand: Discovering Low-rank Submatrices With Quality Guarantees". 
 The code is written in Python 3. 
 
+![Example](example.png)
+
 
 ## 🔧 Install
 
