@@ -1,5 +1,5 @@
 # SaE
-This code implements the algorithms presented in the paper "Sample and Expand: Discovering Low-rank Submatrices With Quality Guarantees". 
+This code implements the algorithms introduced in the paper "Sample and Expand: Discovering Low-rank Submatrices With Quality Guarantees". 
 The code is written in Python 3. 
 
 
